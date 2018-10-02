@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageLicenseUrl>https://github.com/myvas/AspNetCore.TencentCos/blob/master/LICENSE</PackageLicenseUrl>
+    <Description>腾讯云对象存储SDK (cos-dotnet-sdk-v5)</Description>
+    <PackageProjectUrl>https://github.com/myvas/AspNetCore.TencentCos</PackageProjectUrl>
+    <PackageId>AspNetCore.TencentCos</PackageId>
+    <Version>5.0.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="2.0.0" />
+  </ItemGroup>
+</Project>

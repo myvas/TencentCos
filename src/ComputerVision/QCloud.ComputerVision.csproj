@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageLicenseUrl>https://github.com/zhengchun/qcloud-sdk-net/blob/master/LICENSE</PackageLicenseUrl>
+    <RepositoryUrl>https://github.com/zhengchun/qcloud-sdk-net.git</RepositoryUrl>
+    <Authors>ZHENGCHUN</Authors>
+    <Company />
+    <Description>腾讯云的计算机视觉及图像</Description>
+    <Copyright>Copyright (c) ZHENGCHUN 2018</Copyright>
+    <PackageProjectUrl>https://github.com/zhengchun/qcloud-sdk-net/</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>qcloud vision image computer-vision</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core\QCloud.Core.csproj" />
+  </ItemGroup>
+
+</Project>

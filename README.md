@@ -4,6 +4,9 @@
 * 对象存储： COS, Cloud Object Storage
 * 腾讯云：Qcloud, TencentYun
 
+## Nuget
+AspNetCore.TencentCos
+
 ## 接口文档
 https://cloud.tencent.com/document/product/436/10009?
 
