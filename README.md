@@ -11,7 +11,7 @@ AspNetCore.TencentCos
 https://cloud.tencent.com/document/product/436/10111
 
 ### Service
-* Get Service: Impl, Demo
+* GET Service: Impl, Demo
 
 ### Bucket
 * HEAD Bucket: Impl
