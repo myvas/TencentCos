@@ -19,11 +19,10 @@ namespace TencentCos.UnitTests
                 var result = (ErrorResult)serializer.Deserialize(reader);
 
                 Assert.NotNull(result);
-                Assert.True(result.Code == "AccessDenied");
-                Assert.True(result.Resource == "dorr-1243608725.cos.ap-guangzhou.myqcloud.com/test/营业执照副本复印件盖章-杨.jpg");
-                Assert.True(result.RequestId == "NWJiNWUwOGZfY2JhMzNiMGFfYTdkZF80NTI1MWE=");
+                Assert.Equal("AccessDenied", result.Code);
+                Assert.Equal("dorr-1243608725.cos.ap-guangzhou.myqcloud.com/test/营业执照副本复印件盖章-杨.jpg", result.Resource);
+                Assert.Equal("NWJiNWUwOGZfY2JhMzNiMGFfYTdkZF80NTI1MWE=", result.RequestId);
             }
-
         }
     }
 }

@@ -9,7 +9,7 @@ namespace TencentCos.UnitTests
     public class ListAllMyBucketsResultTests
     {
         [Fact]
-        public void ShouldDeserializable_OneItem()
+        public void ShouldDeserializable_One()
         {
             var path = "Data/ListAllMyBucketsResult.xml";
             using (TextReader reader = new StreamReader(path))
@@ -20,16 +20,15 @@ namespace TencentCos.UnitTests
                 Assert.NotNull(result);
                 Assert.NotNull(result.Owner);
                 Assert.NotNull(result.Buckets);
-                Assert.True(result.Owner.DisplayName == "100000555120");
-                Assert.True(result.Buckets.Count == 1);
-                Assert.True(result.Buckets[0].Location == "ap-guangzhou");
-                Assert.True(result.Buckets[0].Name == "dorr-1243608725");
+                Assert.Equal("100000555120", result.Owner.DisplayName);
+                Assert.Single(result.Buckets);
+                Assert.Equal("ap-guangzhou", result.Buckets[0].Location);
+                Assert.Equal("dorr-1243608725", result.Buckets[0].Name);
             }
-
         }
 
         [Fact]
-        public void ShouldDeserializable_TwoItems()
+        public void ShouldDeserializable_Two()
         {
             var path = "Data/ListAllMyBucketsResult2.xml";
             using (TextReader reader = new StreamReader(path))
@@ -40,14 +39,13 @@ namespace TencentCos.UnitTests
                 Assert.NotNull(result);
                 Assert.NotNull(result.Owner);
                 Assert.NotNull(result.Buckets);
-                Assert.True(result.Owner.DisplayName == "100000555120");
-                Assert.True(result.Buckets.Count == 2);
-                Assert.True(result.Buckets[0].Location == "ap-guangzhou");
-                Assert.True(result.Buckets[0].Name == "dorr-1243608725");
-                Assert.True(result.Buckets[1].Location == "ap-shanghai");
-                Assert.True(result.Buckets[1].Name == "d1rr-1243608725");
+                Assert.Equal("100000555120", result.Owner.DisplayName);
+                Assert.Equal(2, result.Buckets.Count);
+                Assert.Equal("ap-guangzhou", result.Buckets[0].Location);
+                Assert.Equal("dorr-1243608725", result.Buckets[0].Name);
+                Assert.Equal("ap-shanghai", result.Buckets[1].Location);
+                Assert.Equal("d1rr-1243608725", result.Buckets[1].Name);
             }
-
         }
     }
 }
