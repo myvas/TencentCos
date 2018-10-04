@@ -20,12 +20,11 @@ namespace Microsoft.Extensions.DependencyInjection
             }
 
             if (setupAction != null)
-            {
-                //DI: IOptions<TencentCosOptions>
-                services.Configure(setupAction);
+            {                
+                services.Configure(setupAction); //IOptions<TencentCosOptions>
             }
 
-            services.TryAddSingleton<ITencentCosHandler, TencentCosHandler>();
+            services.TryAddScoped<ITencentCosHandler, TencentCosHandler>();
 
             return services;
         }
