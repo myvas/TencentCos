@@ -5,11 +5,9 @@
 * 腾讯云：Qcloud, TencentYun
 
 ## Nuget
-AspNetCore.TencentCos
+[AspNetCore.TencentCos](https://www.nuget.org/packages/AspNetCore.TencentCos)
 
-## 接口文档
-https://cloud.tencent.com/document/product/436/10111
-
+## [接口文档](https://cloud.tencent.com/document/product/436/10111)
 ### Service
 * GET Service: Impl, Demo
 
@@ -26,11 +24,9 @@ https://cloud.tencent.com/document/product/436/10111
 
 # 其他项目
 ## 旧版本
-https://github.com/tencentyun/cos-donet-sdk-v4
-
-实现了cos-dotnet-sdk-v4，已不适用现接口！
+[cos-dotnet-sdk-v4 (Official .NET)](https://github.com/tencentyun/cos-donet-sdk-v4)
 
 ## 其他语言
-https://github.com/tencentyun?utf8=%E2%9C%93&q=cos+v5&type=&language=
+[cos-dotnet-sdk-v5 (Official Android SDK, C SDK, C++ SDK, iOS SDK, Java SDK, JavaScript SDK, Node.js SDK, PHP SDK, Python SDK)](https://github.com/tencentyun?utf8=%E2%9C%93&q=cos+v5&type=&language=)
 
-Android SDK, C SDK, C++ SDK, iOS SDK, Java SDK, JavaScript SDK, Node.js SDK, PHP SDK, Python SDK
+
