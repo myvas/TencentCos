@@ -8,7 +8,21 @@
 AspNetCore.TencentCos
 
 ## 接口文档
-https://cloud.tencent.com/document/product/436/10009?
+https://cloud.tencent.com/document/product/436/10111
+
+### Service
+* Get Service: Impl, Demo
+
+### Bucket
+* HEAD Bucket: Impl
+* PUT Bucket: Impl
+* DELETE Bucket: Impl
+
+### Object
+* HEAD Object: Impl
+* PUT Object: Impl, Demo
+* GET Object: Impl, Demo
+
 
 # 其他项目
 ## 旧版本
