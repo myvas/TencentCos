@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using AspNetCore.TencentCos.Models;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 using System.Xml.XPath;
 
 namespace AspNetCore.TencentCos
@@ -40,51 +42,44 @@ namespace AspNetCore.TencentCos
         /// <summary>
         /// ListBucketsAsync返回所有存储空间列表。
         /// </summary>
+        /// <remarks>See: https://cloud.tencent.com/document/product/436/8291 </remarks>
         /// <returns></returns>
-        public async Task<Bucket[]> ListBucketsAsync()
+        public async Task<ListAllMyBucketsResult> AllBucketsAsync()
         {
-            const string serviceEndpoint = "https://service.cos.myqcloud.com/";
-
-            var req = new HttpRequestMessage(HttpMethod.Get, serviceEndpoint);
+            var endpoint = TencentCosDefaults.ServiceEndpoint;
+            var req = new HttpRequestMessage(HttpMethod.Get, endpoint);
             using (var resp = await SendAsync(req))
             {
-                if (resp.StatusCode != HttpStatusCode.OK)
+                if (!resp.IsSuccessStatusCode)
                 {
                     RequestFailure(HttpMethod.Get, resp.StatusCode, await resp.Content.ReadAsStringAsync());
                 }
 
-                var resultXml = await resp.Content.ReadAsStringAsync();
-                var doc = new XmlDocument();
-                doc.LoadXml(resultXml);
-                var buckets = new List<Bucket>();
-                foreach (XPathNavigator elem in doc.DocumentElement.CreateNavigator().Select("//Buckets/Bucket"))
+                using (Stream sr = await resp.Content.ReadAsStreamAsync())
                 {
-                    var fullname = elem.SelectSingleNode("Name").InnerXml;
-                    var pos = fullname.LastIndexOf("-");
-                    var bucket = new Bucket(
-                        appId: fullname.Substring(pos + 1),
-                        name: fullname.Substring(0, pos),
-                        region: elem.SelectSingleNode("Location").InnerXml);
-                    buckets.Add(bucket);
+                    var serializer = new XmlSerializer(typeof(ListAllMyBucketsResult));
+                    var result = (ListAllMyBucketsResult)serializer.Deserialize(sr);
+                    return result;
                 }
-                return buckets.ToArray();
             }
         }
 
         /// <summary>
-        /// PutBucketAsync创建一个新的存储桶(Bucket)。
-        /// https://cloud.tencent.com/document/product/436/7738
+        /// 创建一个新的存储桶
         /// </summary>
-        /// <param name="name">桶名称</param>
-        /// <param name="region">桶在区域</param>
+        /// <remarks>See: https://cloud.tencent.com/document/product/436/7738 </remarks>
         /// <param name="header">自定义附加请求的标头</param>
-        /// <returns></returns>
-        public async Task<Bucket> PutBucketAsync(string name, string region, Dictionary<string, string> headers = null)
+        /// <returns>返回新创建的<see cref="CosBucket"/>，失败则抛出异常。</returns>
+        public async Task<CosBucket> PutBucketAsync(CosBucket bucket, Dictionary<string, string> headers = null)
         {
-            var bucket = new Bucket(_options.AppId, name, region);
-            var endpoint = bucket.Url + "/";
+            if (bucket == null)
+            {
+                throw new ArgumentNullException(nameof(bucket));
+            }
+
+            var endpoint = bucket.ToHttps("/");
             var req = new HttpRequestMessage(HttpMethod.Put, endpoint);
-            if (headers?.Count > 0)
+            if (headers != null && headers.Any())
             {
                 foreach (var header in headers)
                 {
@@ -93,98 +88,118 @@ namespace AspNetCore.TencentCos
             }
             using (var resp = await SendAsync(req))
             {
-                var payload = await resp.Content.ReadAsStringAsync();
-                if (resp.StatusCode != HttpStatusCode.OK)
+                if (!resp.IsSuccessStatusCode)
                 {
                     RequestFailure(HttpMethod.Put, resp.StatusCode, await resp.Content.ReadAsStringAsync());
                 }
+
                 return bucket;
             }
         }
 
         /// <summary>
-        /// DeleteBucketAsync删除一个指定的存储桶(Bucket)。
+        /// 创建一个新的存储桶
         /// </summary>
-        /// <param name="name">桶名称</param>
-        /// <param name="region">桶在区域</param>
-        /// <returns></returns>
-        public async Task DeleteBucketAsync(string name, string region)
+        /// <remarks>See: https://cloud.tencent.com/document/product/436/7738 </remarks>
+        /// <param name="name">存储桶名称，自动适应带或不带AppId，例如：dorr 或 dorr-1243608725 </param>
+        /// <param name="cosRegionCode">存储桶所在区域（代码），例如：ap-guangzhou </param>
+        /// <param name="header">自定义附加请求的标头</param>
+        /// <returns>返回新创建的<see cref="CosBucket"/>，失败则抛出异常。</returns>
+        public async Task<CosBucket> PutBucketAsync(string name, string cosRegionCode, Dictionary<string, string> headers = null)
         {
-            var bucket = new Bucket(_options.AppId, name, region);
-            var endpoint = bucket.Url + "/";
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+            if (string.IsNullOrWhiteSpace(cosRegionCode))
+            {
+                throw new ArgumentNullException(nameof(cosRegionCode));
+            }
+
+            var bucketName = new BucketName(name);
+            if (string.IsNullOrWhiteSpace(bucketName.AppId))
+            {
+                throw new ArgumentException($"Invalid argument[{nameof(name)}]", nameof(cosRegionCode));
+            }
+
+            var bucket = new CosBucket(bucketName, cosRegionCode);
+
+            return await PutBucketAsync(bucket);
+        }
+
+        /// <summary>
+        /// 删除一个空的存储桶
+        /// </summary>
+        /// <remarks>See: https://cloud.tencent.com/document/product/436/7732 </remarks>
+        public async Task<bool> DeleteBucketAsync(CosBucket bucket)
+        {
+            if (bucket == null)
+            {
+                throw new ArgumentNullException(nameof(bucket));
+            }
+
+            var endpoint = bucket.ToHttps("/");
             var req = new HttpRequestMessage(HttpMethod.Delete, endpoint);
             using (var resp = await SendAsync(req))
             {
-                switch (resp.StatusCode)
+                if (!resp.IsSuccessStatusCode)
                 {
-                    case HttpStatusCode.OK:
-                    case HttpStatusCode.NoContent:
-                        break;
-                    default:
-                        RequestFailure(HttpMethod.Delete, resp.StatusCode, await resp.Content.ReadAsStringAsync());
-                        break;
+                    RequestFailure(HttpMethod.Delete, resp.StatusCode, await resp.Content.ReadAsStringAsync());
                 }
+
+                return true;
             }
         }
 
         /// <summary>
-        /// 上传到指定存储桶。
+        /// 删除一个空的存储桶
         /// </summary>
-        /// <param name="bucketName"></param>
-        /// <param name="region"></param>
-        /// <param name="objectName"></param>
-        /// <param name="content"></param>
-        /// <param name="headers"></param>
+        /// <remarks>See: https://cloud.tencent.com/document/product/436/7732 </remarks>
+        /// <param name="name">桶名称</param>
+        /// <param name="region">桶在区域</param>
         /// <returns></returns>
-        public async Task PutObjectAsync(string bucketName, string region, string objectName, Stream content, Dictionary<string, string> headers = null)
+        public async Task<bool> DeleteBucketAsync(string name, string cosRegionCode)
         {
-            if (string.IsNullOrWhiteSpace(objectName))
+            if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentNullException(nameof(objectName));
+                throw new ArgumentNullException(nameof(name));
+            }
+            if (string.IsNullOrWhiteSpace(cosRegionCode))
+            {
+                throw new ArgumentNullException(nameof(cosRegionCode));
             }
 
-            var host = BuildHostName(bucketName, region);
-            var url = $"{host}/{objectName}";
-            await PutObjectAsync(url, content, headers);
-        }
-
-        private string BuildHostName(string bucketName, string region)
-        {
-            if (string.IsNullOrWhiteSpace(bucketName))
+            var bucketName = new BucketName(name);
+            if (string.IsNullOrWhiteSpace(bucketName.AppId))
             {
-                throw new ArgumentNullException(nameof(bucketName));
+                throw new ArgumentException($"Invalid argument[{nameof(name)}]", nameof(cosRegionCode));
             }
 
-            if (!bucketName.EndsWith($"-{_options.AppId}"))
-            {
-                bucketName = $"{bucketName}-{_options.AppId}";
-            }
+            var bucket = new CosBucket(bucketName, cosRegionCode);
 
-            if (string.IsNullOrWhiteSpace(region))
-            {
-                throw new ArgumentNullException(nameof(region));
-            }
-
-            var host = $"{bucketName}.cos.{region}.myqcloud.com";
-            return host;
+            return await DeleteBucketAsync(bucket);
         }
 
         /// <summary>
-        /// 上传文件到指定的URL。
+        /// 上传文件到指定位置
         /// https://cloud.tencent.com/document/product/436/7749
         /// </summary>
         /// <param name="url"></param>
         /// <param name="content"></param>
         /// <param name="header"></param>
         /// <returns></returns>
-        public async Task PutObjectAsync(string url, Stream content, Dictionary<string, string> headers = null)
+        public async Task<Uri> PutObjectAsync(Uri uri, Stream content, Dictionary<string, string> headers = null)
         {
+            if (uri == null)
+            {
+                throw new ArgumentNullException(nameof(uri));
+            }
             if (content == null)
             {
                 throw new ArgumentNullException(nameof(content));
             }
 
-            var req = new HttpRequestMessage(HttpMethod.Put, url)
+            var req = new HttpRequestMessage(HttpMethod.Put, uri)
             {
                 Content = new StreamContent(content)
             };
@@ -204,78 +219,129 @@ namespace AspNetCore.TencentCos
                     RequestFailure(HttpMethod.Put, resp.StatusCode, await resp.Content.ReadAsStringAsync());
                 }
             }
+
+            return uri;
         }
 
         /// <summary>
-        /// GetObjectAsync读取上传的文件内容。
-        /// https://cloud.tencent.com/document/product/436/7753
+        /// 上传文件到指定位置
         /// </summary>
+        /// <param name="bucketName"></param>
+        /// <param name="region"></param>
+        /// <param name="objectName"></param>
+        /// <param name="content"></param>
+        /// <param name="headers"></param>
+        /// <returns></returns>
+        public async Task<Uri> PutObjectAsync(string host, string containerFolder, string objectName, Stream content, Dictionary<string, string> headers = null)
+        {
+            if (string.IsNullOrWhiteSpace(host))
+            {
+                throw new ArgumentNullException(nameof(host));
+            }
+            if (string.IsNullOrWhiteSpace(objectName))
+            {
+                throw new ArgumentNullException(nameof(objectName));
+            }
+
+            var uri = new Uri(host).Append(containerFolder, objectName);
+            return await PutObjectAsync(uri, content, headers);
+        }
+
+        /// <summary>
+        /// 读取文件内容
+        /// </summary>
+        /// <remarks>See: https://cloud.tencent.com/document/product/436/7753 </remarks>
         /// <param name="url"></param>
         /// <returns></returns>
-        public async Task<Stream> GetObjectAsync(string url)
+        public async Task<bool> GetObjectAsync(Uri requestUri, Action<Stream> actionSaveData, Dictionary<string, string> headers = null)
         {
-            var req = new HttpRequestMessage(HttpMethod.Get, url);
+            var req = new HttpRequestMessage(HttpMethod.Get, requestUri);
+
+            if (headers != null && headers.Any())
+            {
+                foreach (var header in headers)
+                {
+                    req.Headers.TryAddWithoutValidation(header.Key, header.Value);
+                }
+            }
 
             using (var resp = await SendAsync(req))
             {
-                if (resp.StatusCode != HttpStatusCode.OK)
+                if (!resp.IsSuccessStatusCode)
                 {
                     RequestFailure(HttpMethod.Get, resp.StatusCode, await resp.Content.ReadAsStringAsync());
                 }
-                return await resp.Content.ReadAsStreamAsync();
+
+                using (var stream = await resp.Content.ReadAsStreamAsync())
+                {
+                    actionSaveData(stream);
+                }
+                return true;
             }
         }
 
         /// <summary>
-        /// DeleteObjectAsync删除指定的文件。
+        /// 删除一个文件
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        public async Task DeleteObjectAsync(string url)
+        public async Task<bool> DeleteObjectAsync(Uri requestUri)
         {
-            var req = new HttpRequestMessage(HttpMethod.Delete, url);
+            var req = new HttpRequestMessage(HttpMethod.Delete, requestUri);
 
             using (var resp = await SendAsync(req))
             {
-                switch (resp.StatusCode)
+                if (!resp.IsSuccessStatusCode)
                 {
-                    case HttpStatusCode.OK:
-                    case HttpStatusCode.NoContent:
-                        break;
-                    default:
-                        RequestFailure(HttpMethod.Put, resp.StatusCode, await resp.Content.ReadAsStringAsync());
-                        break;
+                    RequestFailure(HttpMethod.Put, resp.StatusCode, await resp.Content.ReadAsStringAsync());
                 }
+
+                return true;
             }
         }
 
-        private void RequestFailure(HttpMethod method, HttpStatusCode respStatusCode, string respContent)
+        /// <summary>
+        /// 判断存储桶或文件是否存在
+        /// </summary>
+        public async Task<bool> ExistsAsync(Uri requestUri)
         {
-            var doc = new XmlDocument();
-            doc.LoadXml(respContent);
-            var root = doc.DocumentElement.CreateNavigator().SelectSingleNode("//Error");
-            var ex = new RequestFailureException(method.ToString(), root.SelectSingleNode("Message").InnerXml)
+            var req = new HttpRequestMessage(HttpMethod.Head, requestUri);
+
+            using (var resp = await SendAsync(req))
             {
-                HttpStatusCode = (int)respStatusCode,
-                ErrorCode = root.SelectSingleNode("Code").InnerXml,
-                ResourceURL = root.SelectSingleNode("Resource").InnerXml,
-                RequestId = root.SelectSingleNode("RequestId").InnerXml,
-                TraceId = root.SelectSingleNode("TraceId").InnerXml,
-            };
-            throw ex;
+                if (!resp.IsSuccessStatusCode)
+                {
+                    RequestFailure(HttpMethod.Put, resp.StatusCode, await resp.Content.ReadAsStringAsync());
+                }
+
+                return true;
+            }
         }
 
+        private void RequestFailure(HttpMethod method, HttpStatusCode respStatusCode, string content)
+        {
+            using (var sr = new StringReader(content))
+            {
+                var serializer = new XmlSerializer(typeof(ErrorResult));
+                var result = (ErrorResult)serializer.Deserialize(sr);
 
+                var ex = new RequestFailureException(method, result)
+                {
+                    StatusCode = respStatusCode
+                };
+                throw ex;
+            }
+        }
 
         private async Task<HttpResponseMessage> SendAsync(HttpRequestMessage req)
         {
             var secretId = _options.SecretId;
             var secretKey = _options.SecretKey;
 
-            var authorization = SignatureHelper.Authorization(req, secretId, secretKey);
+            var signature = new CosSignature(req, secretId, secretKey);
 
             req.Headers.Host = req.RequestUri.Host;
-            req.Headers.TryAddWithoutValidation("Authorization", authorization);
+            req.Headers.TryAddWithoutValidation("Authorization", signature.BuildAuthorizationString());
 
             return await _backchannel.SendAsync(req);
         }

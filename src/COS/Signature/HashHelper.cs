@@ -4,7 +4,7 @@ using System.Text;
 
 namespace AspNetCore.TencentCos
 {
-    public static class HashHelper
+    internal static class HashHelper
     {
         public static string HmacSha1(string key, string content)
         {

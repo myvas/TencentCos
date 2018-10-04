@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AspNetCore.TencentCos.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
@@ -9,6 +10,7 @@ namespace AspNetCore.TencentCos
     public class ListAllMyBucketsResult
     {
         public BucketOwnerResult Owner { get; set; }
+
         public List<BucketResult> Buckets { get; set; }
     }
 
@@ -16,10 +18,11 @@ namespace AspNetCore.TencentCos
     {
         [XmlElement("ID")]
         public string Id { get; set; }
+
         public string DisplayName { get; set; }
     }
 
-    [XmlType("Bucket", AnonymousType = true)]
+    [XmlType("Bucket")]
     public class BucketResult
     {
         public string Name { get; set; }

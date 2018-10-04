@@ -8,8 +8,6 @@ namespace AspNetCore.TencentCos
     /// </summary>
     public class TencentCosOptions
     {
-        public string AppId { get; set; }
-
         public string SecretId { get; set; }
 
         public string SecretKey { get; set; }
@@ -36,8 +34,6 @@ namespace AspNetCore.TencentCos
 
         public virtual void Validate()
         {
-            if (string.IsNullOrEmpty(AppId))
-                throw new ArgumentNullException(nameof(AppId));
             if (string.IsNullOrEmpty(SecretId))
                 throw new ArgumentNullException(nameof(SecretId));
             if (string.IsNullOrEmpty(SecretId))

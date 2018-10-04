@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Error>
+	<Code>AccessDenied</Code>
+	<Message>You are denied by bucket referer rule</Message>
+	<Resource>dorr-1243608725.cos.ap-guangzhou.myqcloud.com/test/营业执照副本复印件盖章-杨.jpg</Resource>
+	<RequestId>NWJiNWUwOGZfY2JhMzNiMGFfYTdkZF80NTI1MWE=</RequestId>
+	<TraceId>OGVmYzZiMmQzYjA2OWNhODk0NTRkMTBiOWVmMDAxODc0OWRkZjk0ZDM1NmI1M2E2MTRlY2MzZDhmNmI5MWI1OWExNmY2NDVlNWI0NWZiZTdjNmI0N2ZlYjU2ODMyMTY5Nzc3MzRkODlmZDk1MzJjZjI5YWRhY2FmNDI3ZDcxZTU=</TraceId>
+</Error>

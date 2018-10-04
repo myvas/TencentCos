@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ListAllMyBucketsResult>
+  <Owner>
+    <ID>qcs::cam::uin/100000577120:uin/100000577120</ID>
+    <DisplayName>100000555120</DisplayName>
+  </Owner>
+  <Buckets>
+    <Bucket>
+      <Name>dorr-1243608725</Name>
+      <Location>ap-guangzhou</Location>
+      <CreationDate>2018-10-01T10:43:49Z</CreationDate>
+    </Bucket>
+  </Buckets>
+</ListAllMyBucketsResult>
+

@@ -18,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_", "_", "{634F9F31-68AD-4D
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TencentCos.UnitTests", "test\TencentCos.UnitTests\TencentCos.UnitTests.csproj", "{F6706D2F-7F23-4E63-AAD3-919D673665E7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{D7AE5477-BD2C-4D83-816F-06BA9A837EFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7AE5477-BD2C-4D83-816F-06BA9A837EFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7AE5477-BD2C-4D83-816F-06BA9A837EFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6706D2F-7F23-4E63-AAD3-919D673665E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6706D2F-7F23-4E63-AAD3-919D673665E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6706D2F-7F23-4E63-AAD3-919D673665E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6706D2F-7F23-4E63-AAD3-919D673665E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -39,6 +45,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{3FA4C83A-8755-44EB-9310-B93FA6354D33} = {6D5690FD-643B-4289-94B1-2E4456C743C5}
 		{D7AE5477-BD2C-4D83-816F-06BA9A837EFE} = {2453DB6C-29FE-4E14-BF93-ECEA31F5F945}
+		{F6706D2F-7F23-4E63-AAD3-919D673665E7} = {876B6223-2CA6-4608-A1B0-DAA46332AF8D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {246333F9-9CCA-41A2-83B3-FD291CB5668C}
