@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using AspNetCore.TencentCos.Models;
+﻿using System.Collections.Generic;
 
 namespace AspNetCore.TencentCos.Exceptions
 {

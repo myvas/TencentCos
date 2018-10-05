@@ -3,11 +3,13 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageLicenseUrl>https://github.com/myvas/AspNetCore.TencentCos/blob/master/LICENSE</PackageLicenseUrl>
-    <Description>腾讯云对象存储SDK (cos-dotnet-sdk-v5)</Description>
+    <Description>cos-dotnet-sdk-v5: Tencent Cloud Object Storage XML API V5 (.NET Core 2.x)</Description>
     <PackageProjectUrl>https://github.com/myvas/AspNetCore.TencentCos</PackageProjectUrl>
     <PackageId>AspNetCore.TencentCos</PackageId>
-    <Version>5.0.0</Version>
+    <Version>5.0.2</Version>
     <LangVersion>latest</LangVersion>
+    <Authors>AspNetCore</Authors>
+    <PackageTags>tencent, qcloud, cos, dotnet, sdk, xml api</PackageTags>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

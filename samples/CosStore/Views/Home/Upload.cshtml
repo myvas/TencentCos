@@ -1,0 +1,52 @@
+﻿@inject Microsoft.Extensions.Options.IOptions<UploadOptions> _uploadOptionsAccessor
+@{
+    ViewData["Title"] = "Upload";
+
+
+}
+
+<div>
+    <div id="container1" class="up-container">
+        <img src="~/images/files-lg.svg" width="204" height="52" />
+        <h1>Drag &amp; drop files here</h1>
+        <p class="up-clipboard">or paste them from clipboard</p>
+
+        <div class="up-form">
+            <form action="/cos/upload" method="post">
+                <input type="file" multiple="multiple" style="display: none;" />
+                <button>Select Files</button>
+            </form>
+        </div>
+
+        <div class="up-status" />
+    </div>
+</div>
+
+<div>
+    <div id="container2" class="up-container">
+        <img src="~/images/files-lg.svg" width="204" height="52" />
+        <h1>Drag &amp; drop files here</h1>
+        <p class="up-clipboard">or paste them from clipboard</p>
+
+        <div class="up-form">
+            <form action="/files/upload" method="post">
+                <input type="file" multiple="multiple" style="display: none;" />
+                <button>Select Files</button>
+            </form>
+        </div>
+
+        <div class="up-status" />
+    </div>
+</div>
+
+<div class="version">@("v" + typeof(UploadOptions).Assembly.GetName().Version.ToString(3))</div>
+
+@section Scripts {
+    <script>
+        var fileContainerWithSeparator = '@Url.Action("GetFile", "Home")/';
+        var fileUploadPostUrl = '@Url.Action("FileUpload", "Home")';
+        var cosUploadPostUrl = '@Url.Action("CosUpload", "Home")';
+        InitUploadZone("container1", fileContainerWithSeparator, cosUploadPostUrl);
+        InitUploadZone("container2", fileContainerWithSeparator, fileUploadPostUrl);
+    </script>
+}

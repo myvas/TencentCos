@@ -1,5 +1,4 @@
-﻿using AspNetCore.TencentCos.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -39,20 +38,20 @@ namespace AspNetCore.TencentCos
         /// <summary>
         /// 上传文件到指定位置
         /// </summary>
-        /// <param name="destUri">存放位置，含文件名</param>
+        /// <param name="objectUri">存放位置，含文件名</param>
         /// <param name="content">文件内容</param>
         /// <param name="headers"></param>
         /// <returns></returns>
-        Task<Uri> PutObjectAsync(Uri destUri, Stream content, Dictionary<string, string> headers = null);
+        Task<Uri> PutObjectAsync(string objectUri, Stream content, Dictionary<string, string> headers = null);
 
         /// <summary>
         /// 上传文件到指定位置
         /// </summary>
-        /// <param name="host">存储桶位置</param>
-        /// <param name="containerFolder">文件夹</param>
+        /// <param name="baseUri">存储桶位置</param>
+        /// <param name="relativeContainer">文件夹</param>
         /// <param name="objectName">文件名</param>
         /// <param name="content">文件内容</param>
-        Task<Uri> PutObjectAsync(string host, string containerFolder, string objectName, Stream content, Dictionary<string, string> headers = null);
+        Task<Uri> PutObjectAsync(string baseUri, string relativeContainer, string objectName, Stream content, Dictionary<string, string> headers = null);
 
         /// <summary>
         /// 删除一个文件
@@ -62,18 +61,18 @@ namespace AspNetCore.TencentCos
         /// </remarks>
         /// <param name="url"></param>
         /// <returns></returns>
-        Task<bool> DeleteObjectAsync(Uri uri);
+        Task<bool> DeleteObjectAsync(string uri);
 
         /// <summary>
         /// 读取文件内容
         /// </summary>
-        Task<bool> GetObjectAsync(Uri requestUri, Action<Stream> actionSaveData, Dictionary<string, string> headers = null);
+        Task<bool> GetObjectAsync(string requestUri, Action<Stream> actionSaveData, Dictionary<string, string> headers = null);
 
         /// <summary>
         /// 判断存储桶或文件是否存在
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        Task<bool> ExistsAsync(Uri uri);
+        Task<bool> ExistsAsync(string uri);
     }
 }

@@ -1,5 +1,4 @@
-﻿using AspNetCore.TencentCos.Models;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -7,13 +6,8 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Linq;
 using System.Xml.Serialization;
-using System.Xml.XPath;
 
 namespace AspNetCore.TencentCos
 {
@@ -188,18 +182,18 @@ namespace AspNetCore.TencentCos
         /// <param name="content"></param>
         /// <param name="header"></param>
         /// <returns></returns>
-        public async Task<Uri> PutObjectAsync(Uri uri, Stream content, Dictionary<string, string> headers = null)
+        public async Task<Uri> PutObjectAsync(string objectUri, Stream content, Dictionary<string, string> headers = null)
         {
-            if (uri == null)
+            if (string.IsNullOrWhiteSpace(objectUri))
             {
-                throw new ArgumentNullException(nameof(uri));
+                throw new ArgumentNullException(nameof(objectUri));
             }
             if (content == null)
             {
                 throw new ArgumentNullException(nameof(content));
             }
 
-            var req = new HttpRequestMessage(HttpMethod.Put, uri)
+            var req = new HttpRequestMessage(HttpMethod.Put, objectUri)
             {
                 Content = new StreamContent(content)
             };
@@ -220,7 +214,7 @@ namespace AspNetCore.TencentCos
                 }
             }
 
-            return uri;
+            return new Uri(objectUri);
         }
 
         /// <summary>
@@ -232,19 +226,19 @@ namespace AspNetCore.TencentCos
         /// <param name="content"></param>
         /// <param name="headers"></param>
         /// <returns></returns>
-        public async Task<Uri> PutObjectAsync(string host, string containerFolder, string objectName, Stream content, Dictionary<string, string> headers = null)
+        public async Task<Uri> PutObjectAsync(string baseUri, string relativeContainer, string objectName, Stream content, Dictionary<string, string> headers = null)
         {
-            if (string.IsNullOrWhiteSpace(host))
+            if (string.IsNullOrWhiteSpace(baseUri))
             {
-                throw new ArgumentNullException(nameof(host));
+                throw new ArgumentNullException(nameof(baseUri));
             }
             if (string.IsNullOrWhiteSpace(objectName))
             {
                 throw new ArgumentNullException(nameof(objectName));
             }
 
-            var uri = new Uri(host).Append(containerFolder, objectName);
-            return await PutObjectAsync(uri, content, headers);
+            var uri = new Uri(baseUri).Append(relativeContainer, objectName);
+            return await PutObjectAsync(uri.ToString(), content, headers);
         }
 
         /// <summary>
@@ -253,7 +247,7 @@ namespace AspNetCore.TencentCos
         /// <remarks>See: https://cloud.tencent.com/document/product/436/7753 </remarks>
         /// <param name="url"></param>
         /// <returns></returns>
-        public async Task<bool> GetObjectAsync(Uri requestUri, Action<Stream> actionSaveData, Dictionary<string, string> headers = null)
+        public async Task<bool> GetObjectAsync(string requestUri, Action<Stream> actionSaveData, Dictionary<string, string> headers = null)
         {
             var req = new HttpRequestMessage(HttpMethod.Get, requestUri);
 
@@ -285,7 +279,7 @@ namespace AspNetCore.TencentCos
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        public async Task<bool> DeleteObjectAsync(Uri requestUri)
+        public async Task<bool> DeleteObjectAsync(string requestUri)
         {
             var req = new HttpRequestMessage(HttpMethod.Delete, requestUri);
 
@@ -303,7 +297,7 @@ namespace AspNetCore.TencentCos
         /// <summary>
         /// 判断存储桶或文件是否存在
         /// </summary>
-        public async Task<bool> ExistsAsync(Uri requestUri)
+        public async Task<bool> ExistsAsync(string requestUri)
         {
             var req = new HttpRequestMessage(HttpMethod.Head, requestUri);
 
@@ -311,7 +305,8 @@ namespace AspNetCore.TencentCos
             {
                 if (!resp.IsSuccessStatusCode)
                 {
-                    RequestFailure(HttpMethod.Put, resp.StatusCode, await resp.Content.ReadAsStringAsync());
+                    return false;
+                    //RequestFailure(HttpMethod.Put, resp.StatusCode, await resp.Content.ReadAsStringAsync());
                 }
 
                 return true;

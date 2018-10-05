@@ -1,10 +1,6 @@
-﻿using AspNetCore.TencentCos.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
-using System.Text;
 
 namespace AspNetCore.TencentCos.Headers
 {
@@ -15,6 +11,8 @@ namespace AspNetCore.TencentCos.Headers
         public const string XCosGrantReadDescriptor = "x-cos-grant-read";
         public const string XCosGrantWriteDescriptor = "x-cos-grant-write";
         public const string XCosGrantFullControlDescriptor = "x-cos-grant-full-control";
+        public const string XCosServerSideEncryptionDescriptor = "x-cos-server-side-encryption";
+        public const string XCosServerSideEncryption_Aes256 = "AES256";
 
         public const string XCosMetaPrefix = "x-cos-meta-";
 
@@ -22,7 +20,21 @@ namespace AspNetCore.TencentCos.Headers
             : base(headers)
         {
         }
-        
+
+        public bool XCosServerSideEncryption
+        {
+            get
+            {
+                var s = HttpRequestHeaders.GetValues(XCosServerSideEncryptionDescriptor).FirstOrDefault(x => !string.IsNullOrWhiteSpace(x));
+                return string.Compare(XCosServerSideEncryption_Aes256, s, true) == 0;
+            }
+            set
+            {
+                if (value)
+                    HttpRequestHeaders.TryAddWithoutValidation(XCosServerSideEncryptionDescriptor, XCosServerSideEncryption_Aes256);
+            }
+        }
+
         public XCosStorageClass XCosStorageClass
         {
             get

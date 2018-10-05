@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
-namespace AspNetCore.TencentCos.Models
+namespace AspNetCore.TencentCos
 {
     /// <summary>
     /// COS存储桶。

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AspNetCore.TencentCos.Models
+namespace AspNetCore.TencentCos
 {
     /// <summary>
     /// 访问权限

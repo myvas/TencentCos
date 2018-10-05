@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
 
-namespace AspNetCore.TencentCos.Models.Headers
+namespace AspNetCore.TencentCos.Headers
 {
     /// <summary>
     /// ContentMD5, ContentType, ContentLength

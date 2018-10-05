@@ -1,8 +1,4 @@
-﻿using AspNetCore.TencentCos.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace AspNetCore.TencentCos

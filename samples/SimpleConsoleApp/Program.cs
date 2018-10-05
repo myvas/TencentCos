@@ -1,12 +1,10 @@
-﻿using AspNetCore.TencentCos.Models;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace AspNetCore.TencentCos
@@ -64,7 +62,7 @@ namespace AspNetCore.TencentCos
 
                 try
                 {
-                    await cosHandler.GetObjectAsync(new Uri(url), stream =>
+                    await cosHandler.GetObjectAsync(url, stream =>
                     {
                         var remoteFilePath = new Uri(url).LocalPath;
                         string dlFileName = Path.GetFileName(remoteFilePath);
@@ -94,7 +92,7 @@ namespace AspNetCore.TencentCos
 
             try
             {
-                result = await cosHandler.DeleteObjectAsync(new Uri(url));
+                result = await cosHandler.DeleteObjectAsync(url);
                 Console.WriteLine("Deleted");
             }
             catch

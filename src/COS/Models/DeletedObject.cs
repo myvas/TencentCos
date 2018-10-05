@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace AspNetCore.TencentCos.Models
+namespace AspNetCore.TencentCos
 {
     public class DeletedObject : CosEntity
     {

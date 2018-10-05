@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace AspNetCore.TencentCos.Models
+namespace AspNetCore.TencentCos
 {
     /// <summary>
     /// 错误信息返回内容

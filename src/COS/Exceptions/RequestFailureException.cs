@@ -1,10 +1,7 @@
-﻿using AspNetCore.TencentCos.Models;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Net;
 using System.Net.Http;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace AspNetCore.TencentCos
 {
