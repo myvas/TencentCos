@@ -29,7 +29,7 @@ https://cloud.tencent.com/document/product/436/10111
 * GET Object: Impl, Demo
 
 
-
+---
 ## 其他版本实现
 ### 其他语言
 [cos-xxx-sdk-v5](https://github.com/tencentyun?utf8=%E2%9C%93&q=cos+v5&type=&language=): Android, C, C++, iOS, Java, JavaScript, Node.js, PHP, Python
