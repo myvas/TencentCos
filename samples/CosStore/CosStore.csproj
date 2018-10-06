@@ -1,8 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <UserSecretsId>bbf8ecfc-4a38-4eec-b424-760871dde30b</UserSecretsId>
+    <UserSecretsId>cosstore</UserSecretsId>
+    <AssemblyName>cosstore</AssemblyName>
+    <RootNamespace>AspNetCore.TencentCos.Store</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,7 +21,6 @@
     <None Include="wwwroot\images\banner2.svg" />
     <None Include="wwwroot\images\banner3.svg" />
     <None Include="wwwroot\js\site.js" />
-    <None Include="wwwroot\js\site.min.js" />
   </ItemGroup>
 
   <ItemGroup>
