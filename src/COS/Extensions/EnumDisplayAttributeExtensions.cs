@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace AspNetCore.TencentCos
+namespace System
 {
 
-    internal static class EnumDisplayAttributeExtensions
+    public static class EnumDisplayAttributeExtensions
     {
         /// <summary>
         /// Flags supported!

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -53,6 +54,36 @@ namespace AspNetCore.TencentCos
                 {
                     var serializer = new XmlSerializer(typeof(ListAllMyBucketsResult));
                     var result = (ListAllMyBucketsResult)serializer.Deserialize(sr);
+                    return result;
+                }
+            }
+        }
+
+        public async Task<ListBucketResult> AllObjectsAsync(string uri, string prefix, string maxKeys)
+        {
+            var query = new QueryBuilder()
+            {
+                { "prefix",         prefix},
+                //{ "delimiter",      "" },
+                //{ "encoding-type",  "" },
+                //{ "marker",         "" },
+                { "max-keys",       maxKeys },
+            };
+            uri = uri + query;
+
+            var req = new HttpRequestMessage(HttpMethod.Get, uri);
+
+            using (var resp = await SendAsync(req))
+            {
+                if (!resp.IsSuccessStatusCode)
+                {
+                    RequestFailure(HttpMethod.Get, resp.StatusCode, await resp.Content.ReadAsStringAsync());
+                }
+
+                using (Stream sr = await resp.Content.ReadAsStreamAsync())
+                {
+                    var serializer = new XmlSerializer(typeof(ListBucketResult));
+                    var result = (ListBucketResult)serializer.Deserialize(sr);
                     return result;
                 }
             }
@@ -247,7 +278,7 @@ namespace AspNetCore.TencentCos
         /// <remarks>See: https://cloud.tencent.com/document/product/436/7753 </remarks>
         /// <param name="url"></param>
         /// <returns></returns>
-        public async Task<bool> GetObjectAsync(string requestUri, Action<Stream> actionSaveData, Dictionary<string, string> headers = null)
+        public async Task<Stream> GetObjectAsync(string requestUri, Action<Stream> actionHandleStream, Dictionary<string, string> headers = null)
         {
             var req = new HttpRequestMessage(HttpMethod.Get, requestUri);
 
@@ -259,18 +290,17 @@ namespace AspNetCore.TencentCos
                 }
             }
 
-            using (var resp = await SendAsync(req))
+            var resp = await SendAsync(req);
             {
+
                 if (!resp.IsSuccessStatusCode)
                 {
                     RequestFailure(HttpMethod.Get, resp.StatusCode, await resp.Content.ReadAsStringAsync());
                 }
 
-                using (var stream = await resp.Content.ReadAsStreamAsync())
-                {
-                    actionSaveData(stream);
-                }
-                return true;
+                var stream = await resp.Content.ReadAsStreamAsync();
+                actionHandleStream(stream);
+                return stream;
             }
         }
 

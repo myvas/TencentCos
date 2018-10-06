@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace AspNetCore.TencentCos
@@ -35,6 +36,8 @@ namespace AspNetCore.TencentCos
         /// <returns></returns>
         Task<bool> DeleteBucketAsync(string name, string region);
 
+        Task<ListBucketResult> AllObjectsAsync(string uri, string prefix, string maxKeys);
+
         /// <summary>
         /// 上传文件到指定位置
         /// </summary>
@@ -66,7 +69,7 @@ namespace AspNetCore.TencentCos
         /// <summary>
         /// 读取文件内容
         /// </summary>
-        Task<bool> GetObjectAsync(string requestUri, Action<Stream> actionSaveData, Dictionary<string, string> headers = null);
+        Task<Stream> GetObjectAsync(string requestUri, Action<Stream> actionHandleStream, Dictionary<string, string> headers = null);
 
         /// <summary>
         /// 判断存储桶或文件是否存在

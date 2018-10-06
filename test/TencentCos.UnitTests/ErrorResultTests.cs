@@ -1,6 +1,4 @@
 using AspNetCore.TencentCos;
-using AspNetCore.TencentCos.Models;
-using System;
 using System.IO;
 using System.Xml.Serialization;
 using Xunit;
@@ -20,7 +18,7 @@ namespace TencentCos.UnitTests
 
                 Assert.NotNull(result);
                 Assert.Equal("AccessDenied", result.Code);
-                Assert.Equal("dorr-1243608725.cos.ap-guangzhou.myqcloud.com/test/ÓªÒµÖ´ÕÕ¸±±¾¸´Ó¡¼þ¸ÇÕÂ-Ñî.jpg", result.Resource);
+                Assert.Equal("dorr-1243608725.cos.ap-guangzhou.myqcloud.com/test/²âÊÔ.jpg", result.Resource);
                 Assert.Equal("NWJiNWUwOGZfY2JhMzNiMGFfYTdkZF80NTI1MWE=", result.RequestId);
             }
         }

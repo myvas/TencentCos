@@ -22,7 +22,19 @@ namespace AspNetCore.TencentCos
 
             return result;
         }
-        
+
+        public async static Task<List<CloudObjectMetadata>> ListObjects(ITencentCosHandler cosHandler, CosBucket cosBucket0)
+        {
+            var url = ReadLineOrDefault($"Please input bucket url({cosBucket0.ToHttps("")}):", cosBucket0.ToHttps("").ToString());
+            var objectsResult = await cosHandler.AllObjectsAsync(url, "", "");
+            var result = objectsResult.Contents.Select(x => $"{x.Key}\t{x.Size} B\t{x.LastModified}").ToList();
+
+            Console.WriteLine("Contents:");
+            Console.WriteLine(string.Join(Environment.NewLine, result));
+
+            return objectsResult.Contents;
+        }
+
         public async static Task<Uri> UploadObject(ITencentCosHandler cosHandler, CosBucket cosBucket0)
         {
             Uri resultUri = null;
@@ -127,6 +139,8 @@ namespace AspNetCore.TencentCos
 
             var buckets = await ListBuckets(cosHandler);
 
+            var objects = await ListObjects(cosHandler, buckets[0]);
+
             var uploadUri = await UploadObject(cosHandler, buckets[0]);
             if (uploadUri == null) { return; }
 
@@ -134,7 +148,7 @@ namespace AspNetCore.TencentCos
             if (downloadUri == null) { return; }
 
             var deleteResult = await DeleteObject(cosHandler, uploadUri);
-            
+
             Console.WriteLine("Press any key to exit...");
             Console.ReadKey();
         }

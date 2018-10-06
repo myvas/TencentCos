@@ -1,6 +1,48 @@
 ﻿// UploadFile: (1) Drag & drop single or multiple files, (2) Paste from clipboard and name .png file.
+/*
+<div>
+    <h2>COS</h2>
+    <div id="container1" class="up-container">
+        <img src="~/images/files-lg.svg" width="204" height="52" />
+        <h1>Drag &amp; drop files here</h1>
+        <p class="up-clipboard">or paste them from clipboard</p>
 
-function UploadFile(postApiUrl, file, onCompleted, onError, onProgress) {
+        <div class="up-form">
+            <form asp-action="CosUpload" asp-controller="Home" method="post">
+                <input type="file" multiple="multiple" style="display: none;" />
+                <button>Select Files</button>
+            </form>
+        </div>
+
+        <div class="up-status" data-urlformat='@Url.Action("GetCloudObject", "Home", new {fileName="filenameplaceholder" })' />
+    </div>
+</div>
+
+<div>
+    <h2>File</h2>
+    <div id="container2" class="up-container">
+        <img src="~/images/files-lg.svg" width="204" height="52" />
+        <h1>Drag &amp; drop files here</h1>
+        <p class="up-clipboard">or paste them from clipboard</p>
+
+        <div class="up-form">
+            <form asp-action="FileUpload" asp-controller="Home" method="post">
+                <input type="file" multiple="multiple" style="display: none;" />
+                <button>Select Files</button>
+            </form>
+        </div>
+
+        <div class="up-status" data-urlformat='@Url.Action("GetFile", "Home", new {fileName="filenameplaceholder" })' />
+    </div>
+</div>
+
+<script>
+    InitUploadZone("container1");
+    InitUploadZone("container2");
+</script>
+*/
+
+function UploadFile(url, file, onCompleted, onError, onProgress) {
     var formData = new FormData();
     formData.append("file", file, file.customName || file.name);
 
@@ -31,7 +73,7 @@ function UploadFile(postApiUrl, file, onCompleted, onError, onProgress) {
         };
     }
 
-    currentRequest.open("POST", postApiUrl);
+    currentRequest.open("POST", url);
     currentRequest.send(formData);
 }
 
@@ -44,9 +86,8 @@ function IsPasteSupport() {
     return 'onpaste' in document;
 }
 
-// InitUploadZone("container1");
-function InitUploadZone(containerName, fileContainerWithSeparator, uploadPostUrl) {
-    var UploadPostUrl;
+// InitUploadZone("container1", "/cos/?fileName=");
+function InitUploadZone(containerName, fileContainerWithSeparator) {
     var RootContainer;
     var FormContainer;
     var Form;
@@ -61,7 +102,9 @@ function InitUploadZone(containerName, fileContainerWithSeparator, uploadPostUrl
         for (var i = 0; i < CurrentFiles.length; i++) {
             var file = CurrentFiles[i];
             var fileName = file.customName || file.name;
-            var fileUrl = fileContainerWithSeparator + fileName;//window.location.href + fileName;
+            //var fileUrl = fileContainerWithSeparator + fileName;//window.location.href + fileName;
+            var urlformat = Status.getAttribute("data-urlformat");
+            var fileUrl = urlformat.replace("filenameplaceholder", fileName);
 
             content += ""
                 + "<div data-file-index='" + i + "' class='up-file'>"
@@ -92,7 +135,7 @@ function InitUploadZone(containerName, fileContainerWithSeparator, uploadPostUrl
             }
 
             UploadFile(
-                UploadPostUrl,
+                Form.action,
                 CurrentFiles[CurrentFileIndex],
                 function (e) {
                     if (container != null) {
@@ -123,7 +166,6 @@ function InitUploadZone(containerName, fileContainerWithSeparator, uploadPostUrl
         }
     }
 
-    UploadPostUrl = uploadPostUrl;
     RootContainer = document.getElementById(containerName);
     FormContainer = RootContainer.querySelector(".up-form");
     Form = FormContainer.querySelector("form");//document.getElementById("form");

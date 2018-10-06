@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace AspNetCore.TencentCos
@@ -23,6 +24,9 @@ namespace AspNetCore.TencentCos
     {
         public string Name { get; set; }
         public string Location { get; set; }
-        public string CreateDate { get; set; }
+        public string CreationDate { get; set; }
+
+        public CosBucket GetBucket() { return new CosBucket(this); }
+        public DateTimeOffset GetCreationDate() { return DateTimeOffset.Parse(CreationDate); }
     }
 }

@@ -4,6 +4,9 @@
 * 腾讯云(Qcloud)
 * IDE: dotnetcore 2.1, Visual Studio 2017 15.8.x
 
+## Demo Online
+http://cos-demo.myvas.com
+
 ## Nuget
 [AspNetCore.TencentCos](https://www.nuget.org/packages/AspNetCore.TencentCos)
 
@@ -11,18 +14,18 @@
 https://cloud.tencent.com/document/product/436/10111
 
 ### Service
-* GET Service: Impl, Demo
+* GET Service/List Buckets: Impl, Demo
 
 ### Bucket
-* HEAD Bucket: Impl
+* HEAD Bucket: Impl, Tested
 * PUT Bucket: Impl
 * DELETE Bucket: Impl
+* Get Bucket/List Objects: Impl, Demo
 
 ### Object
-* HEAD Object: Impl
+* HEAD Object: Impl, Tested
 * PUT Object: Impl, Demo
 * GET Object: Impl, Demo
-
 
 # 其他版本实现
 ## 其他语言

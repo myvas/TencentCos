@@ -119,4 +119,22 @@ body {
     opacity: 0.5;
 }
 
-@import "site.reponsive"
+.crop {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    /*width: 100px;*/
+}
+
+.break-word {
+    word-wrap: break-word;
+}
+
+.ellipsis {
+    text-overflow: ellipsis;
+    /* Required for text-overflow to do anything */
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+@import "site.reponsive";

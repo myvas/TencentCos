@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace AspNetCore.TencentCos
+namespace System
 {
     public class TEnumParser<TEnum>
     {

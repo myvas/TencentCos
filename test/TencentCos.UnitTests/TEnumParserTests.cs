@@ -1,9 +1,5 @@
 using AspNetCore.TencentCos;
-using System;
-using System.IO;
-using System.Xml.Serialization;
 using Xunit;
-using AspNetCore.TencentCos.Models;
 
 namespace TencentCos.UnitTests
 {

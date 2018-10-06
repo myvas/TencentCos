@@ -1,0 +1,42 @@
+﻿@model AspNetCore.TencentCos.ListAllMyBucketsResult
+@{
+    ViewData["Title"] = "All Buckets";
+}
+
+<div class="jumbotron">
+    <h1>All Buckets</h1>
+</div>
+<div class="row">
+    <div class="cos-xs-12">
+        <h2 class="text-center">Owner</h2>
+        <dl class="dl-horizontal">
+            <dt>Id</dt>
+            <dd>@Model.Owner.Id</dd>
+            <dt>DisplayName</dt>
+            <dd>@Model.Owner.Id</dd>
+        </dl>
+    </div>
+    @foreach (var item in Model.Buckets)
+    {
+        var url = item.GetBucket().ToHttps("");
+
+        <div class="col-md-4">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    @item.Name
+                </div>
+                <div class="panel-body">
+                    <div class="break-word"><a href='@Url.Action("AllObjects","Home", new { url = url})'>@url</a></div>
+                    <dl>
+                        <dt>Name</dt>
+                        <dd>@item.Name</dd>
+                        <dt>Location</dt>
+                        <dd>@item.Location</dd>
+                        <dt>CreationDate</dt>
+                        <dd><i>@item.GetCreationDate().ToLocalTime()</i></dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    }
+</div>
