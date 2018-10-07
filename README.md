@@ -5,7 +5,7 @@
 * IDE: dotnetcore 2.1, Visual Studio 2017 15.8.x
 
 ## Demo Online
-http://cos-demo.myvas.com
+http://demo.cos.myvas.com
 
 ## Nuget
 [AspNetCore.TencentCos](https://www.nuget.org/packages/AspNetCore.TencentCos)
