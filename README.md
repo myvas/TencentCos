@@ -8,7 +8,7 @@
 http://demo.cos.myvas.com
 
 ## Nuget
-[AspNetCore.TencentCos](https://www.nuget.org/packages/AspNetCore.TencentCos)
+[Myvas.AspNetCore.TencentCos](https://www.nuget.org/packages/Myvas.AspNetCore.TencentCos)
 
 ## Api Docs
 https://cloud.tencent.com/document/product/436/10111
