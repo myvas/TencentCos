@@ -1,8 +1,8 @@
-# TencentCos (cos-dotnet-sdk-v5)
-腾讯云对象存储SDK
+# TencentCos
+腾讯云对象存储SDK (cos-dotnet-sdk-v5)
 * 对象存储(COS, Cloud Object Storage)
-* 腾讯云(Qcloud)
-* IDE: dotnetcore 2.1, Visual Studio 2017 15.8.x
+* 腾讯云(Qcloud/TencentYun)
+* IDE: Visual Studio 2017 15.8.7, dotnet-sdk-2.1.403
 
 ## Nuget
 [Myvas.AspNetCore.TencentCos](https://www.nuget.org/packages/Myvas.AspNetCore.TencentCos)
