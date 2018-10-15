@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Description>cos-dotnet-sdk-v5: Tencent Cloud Object Storage XML API V5 (.NET Core)</Description>
+    <PackageProjectUrl>https://github.com/myvas/TencentCos</PackageProjectUrl>
+    <PackageId>Myvas.AspNetCore.TencentCos</PackageId>
+    <Version>5.0.5</Version>
+    <LangVersion>latest</LangVersion>
+    <Authors>Myvas</Authors>
+    <PackageTags>myvas,aspnetcore,cos-dotnet-sdk-v5,tencent cos</PackageTags>
+    <RootNamespace>Myvas.AspNetCore.TencentCos</RootNamespace>
+    <AssemblyName>Myvas.AspNetCore.TencentCos</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="2.1.1" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
+  </ItemGroup>
+
+</Project>
