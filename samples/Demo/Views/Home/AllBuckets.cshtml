@@ -1,4 +1,4 @@
-﻿@model AspNetCore.TencentCos.ListAllMyBucketsResult
+﻿@model Myvas.AspNetCore.TencentCos.ListAllMyBucketsResult
 @{
     ViewData["Title"] = "All Buckets";
 }
@@ -7,26 +7,31 @@
     <h1>All Buckets</h1>
 </div>
 <div class="row">
-    <div class="cos-xs-12">
-        <h2 class="text-center">Owner</h2>
-        <dl class="dl-horizontal">
-            <dt>Id</dt>
-            <dd>@Model.Owner.Id</dd>
-            <dt>DisplayName</dt>
-            <dd>@Model.Owner.Id</dd>
-        </dl>
+    <div class="col-12 text-center">
+        <div class="d-flex flex-column justify-content-center">
+            <h2>Owner</h2>
+            <dl>
+                <dt>Id</dt>
+                <dd>@Model.Owner.Id</dd>
+                <dt>DisplayName</dt>
+                <dd>@Model.Owner.Id</dd>
+            </dl>
+        </div>
     </div>
+</div>
+<div class="row">
     @foreach (var item in Model.Buckets)
     {
         var url = item.GetBucket().ToHttps("");
 
-        <div class="col-md-4">
-            <div class="panel panel-success">
-                <div class="panel-heading">
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-header">
                     @item.Name
                 </div>
-                <div class="panel-body">
-                    <div class="break-word"><a href='@Url.Action("AllObjects","Home", new { url = url})'>@url</a></div>
+                <div class="card-body">
+                    <div class="text-break"><a href='@Url.Action("AllObjects","Home", new { url = url})'>@url</a></div>
+                    <hr />
                     <dl>
                         <dt>Name</dt>
                         <dd>@item.Name</dd>

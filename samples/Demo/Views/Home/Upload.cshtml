@@ -1,5 +1,4 @@
-﻿@inject Microsoft.Extensions.Options.IOptions<UploadOptions> _uploadOptionsAccessor
-@{
+﻿@{
     ViewData["Title"] = "Upload";
 }
 
@@ -38,8 +37,6 @@
         <div class="up-status" data-urlformat='@Url.Action("GetFile", "Home", new {fileName="filenameplaceholder" })' />
     </div>
 </div>
-
-<div class="version">@("v" + typeof(UploadOptions).Assembly.GetName().Version.ToString(3))</div>
 
 @section Scripts {
     <script>

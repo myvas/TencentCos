@@ -12,23 +12,23 @@
 <div class="row">
     <div class="col-md-4">
         <h2>Github</h2>
-        <p><a href="https://github.com/Myvas/TencentCos">https://github.com/Myvas/TencentCos</a></p>
+        <p class="text-break"><a href="https://github.com/Myvas/TencentCos">https://github.com/Myvas/TencentCos</a></p>
     </div>
     <div class="col-md-4">
         <h2>Nuget</h2>
-        <p><a href="https://www.nuget.org/packages/Myvas.AspNetCore.TencentCos">https://www.nuget.org/packages/Myvas.AspNetCore.TencentCos</a></p>
+        <p class="text-break"><a href="https://www.nuget.org/packages/Myvas.AspNetCore.TencentCos">https://www.nuget.org/packages/Myvas.AspNetCore.TencentCos</a></p>
     </div>
     <div class="col-md-4">
         <h2>API docs</h2>
-        <p><a href="https://cloud.tencent.com/document/product/436/10111">https://cloud.tencent.com/document/product/436/10111</a></p>
+        <p class="text-break"><a href="https://cloud.tencent.com/document/product/436/10111">https://cloud.tencent.com/document/product/436/10111</a></p>
     </div>
 </div>
 <div class="row">
-    <div class="col-xs-12">
+    <div class="col-12">
         <h2>Settings</h2>
         <p>
             ConfigureServices
-<pre>
+<pre class="bg-light p-3 rounded">
 services.AddTencentCos(options =>
 {
     options.SecretId = Configuration["TencentCos:SecretId"];
@@ -36,10 +36,9 @@ services.AddTencentCos(options =>
 });
 </pre>
         </p>
-
         <p>
             XxxController
-            <pre>
+            <pre class="bg-light p-3 rounded">
 private readonly ITencentCosHandler _cosHandler;
 
 public XxxController(ITencentCosHandler cosHandler)
@@ -56,3 +55,5 @@ public async Task<IActionResult> AllBuckets()
         </p>
     </div>
 </div>
+
+<div class="version">@("v" + typeof(Startup).Assembly.GetName().Version.ToString(3))</div>

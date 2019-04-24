@@ -7,9 +7,17 @@ namespace Demo
         public long MaxLength { get; set; }
         public List<string> SupportedExtensions { get; } = new List<string>();
 
-        public string StorageUri { get;set;}
-
-        public string StoragePath { get; set; }
         public bool IsOverrideEnabled { get; set; }
+    }
+
+    public class CosUploadOptions : UploadOptions
+    {
+        public string CosStorageUri { get; set; }
+
+    }
+
+    public class FileUploadOptions : UploadOptions
+    {
+        public string FileStoragePath { get; set; }
     }
 }
