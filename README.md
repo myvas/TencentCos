@@ -38,4 +38,10 @@ https://cloud.tencent.com/document/product/436/10111
 
 [cos-dotnet-sdk-v4](https://github.com/tencentyun/cos-donet-sdk-v4): Obsolete!
 
+## 注意
+除遵守Linux和Windows中的文件命名规则外，文件名中也不能含有下列字符：
+```
+~#[]@!$&'()+,;=^
+```
+
 
