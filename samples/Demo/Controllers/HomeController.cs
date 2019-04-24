@@ -72,7 +72,22 @@ namespace Demo.Controllers
 			return Ok();
 		}
 
-		[HttpPost("/files/upload")]
+        public static string NormalizeFilePathToUrlPath(string filePath)
+        {
+            // RFC1738: Uniform Resource Locators, RFC3986: Uniform Resource Identifier
+            // A URI reserved characters:
+            // : / ? # [ ] @ ! $ & ' ( ) * + , ; =
+
+            // A filename cannot contain any of the following characters:
+            // \ / : * ? " < > | 
+
+            // A filename allowed, but URI reserved characters:
+            //~      # [ ] @ ! $ & ' ( ) * + , ; =
+
+            throw new NotImplementedException();
+        }
+
+        [HttpPost("/files/upload")]
 		public StatusCodeResult FileUpload(IFormFile file)
 		{
 			if (file == null)
