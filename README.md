@@ -1,11 +1,10 @@
-# TencentCos
+# Myvas.AspNetCore.TencentCos [![NuGet](https://img.shields.io/nuget/v/Myvas.AspNetCore.TencentCos.svg)](https://www.nuget.org/packages/Myvas.AspNetCore.TencentCos) [![GitHub (Pre-)Release Date](https://img.shields.io/github/release-date-pre/myvas/AspNetCore.TencentCos?label=github)](https://github.com/myvas/AspNetCore.TencentCos)
+
 腾讯云对象存储SDK (cos-dotnet-sdk-v5)
+
 * 对象存储(COS, Cloud Object Storage)
 * 腾讯云(Qcloud/TencentYun)
 * IDE: Visual Studio 2017 15.8.7, dotnet-sdk-2.1.403
-
-## Nuget
-[Myvas.AspNetCore.TencentCos](https://www.nuget.org/packages/Myvas.AspNetCore.TencentCos)
 
 ## Demo Online
 http://demo.cos.myvas.com
@@ -37,5 +36,11 @@ https://cloud.tencent.com/document/product/436/10111
 * 已过期版本
 
 [cos-dotnet-sdk-v4](https://github.com/tencentyun/cos-donet-sdk-v4): Obsolete!
+
+## 注意
+除遵守Linux和Windows中的文件命名规则外，文件名中也不能含有下列字符：
+```
+~#[]@!$&'()+,;=^
+```
 
 
