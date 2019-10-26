@@ -1,4 +1,4 @@
-# Myvas.AspNetCore.TencentCos [![NuGet](https://img.shields.io/nuget/v/Myvas.AspNetCore.TencentCos.svg)![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/Myvas.AspNetCore.TencentCos?label=%20)](https://www.nuget.org/packages/Myvas.AspNetCore.TencentCos) [![GitHub (Pre-)Release Date](https://img.shields.io/github/release-date-pre/myvas/AspNetCore.TencentCos?label=github)](https://github.com/myvas/AspNetCore.TencentCos)
+# Myvas.AspNetCore.TencentCos [![NuGet](https://img.shields.io/nuget/v/Myvas.AspNetCore.TencentCos.svg)![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/Myvas.AspNetCore.TencentCos?label=%3E)](https://www.nuget.org/packages/Myvas.AspNetCore.TencentCos) [![GitHub (Pre-)Release Date](https://img.shields.io/github/release-date-pre/myvas/AspNetCore.TencentCos?label=github)](https://github.com/myvas/AspNetCore.TencentCos)
 
 腾讯云对象存储SDK (cos-dotnet-sdk-v5)
 
