@@ -1,0 +1,64 @@
+﻿@model Myvas.AspNetCore.TencentCos.ListBucketResult
+@{
+	ViewData["Title"] = "Objects in " + Model.Name;
+}
+
+<div class="jumbotron">
+	<h1>Objects in @Model.Name</h1>
+</div>
+<div class="row">
+    <div class="col-12 text-center">
+        <h4>@ViewData["BucketUrl"]</h4>
+        <dl>
+            <dt>EncodingType</dt>
+            <dd>@Model.EncodingType</dd>
+            <dt>Prefix</dt>
+            <dd>@Model.Prefix</dd>
+            <dt>Marker</dt>
+            <dd>@Model.Marker</dd>
+            <dt>MaxKeys</dt>
+            <dd>@Model.MaxKeys</dd>
+            <dt>IsTruncated</dt>
+            <dd>@Model.IsTruncated</dd>
+        </dl>
+    </div>
+    @foreach (var item in Model.Contents)
+    {
+        var url = new Uri(new Uri((string)ViewData["BucketUrl"]), item.Key);
+
+        <div class="col-md-4 mb-4">
+            <div class='card @(item.Size=="0"?"":"card-success")'>
+                <div class="card-header text-break" title="@item.Key">
+                    @item.Key
+                </div>
+                <div class="card-body">
+                    <div class="text-left">
+                        @if (item.GetSize() == 0)
+                        {
+                            <div class="text-break">@url</div>
+                        }
+                        else
+                        {
+                            <div class="text-break">
+                                <a href='@Url.Action("OpenCloudObject","Home", new { url = url})'>@url</a>
+                            </div>
+                        }
+                    </div>
+                    <hr />
+                    <dl>
+                        <dt>Key</dt>
+                        <dd class="text-break">@item.Key</dd>
+                        <dt>ETag</dt>
+                        <dd>@item.ETag</dd>
+                        <dt>Size</dt>
+                        <dd>@item.Size</dd>
+                        <dt>StorageClass</dt>
+                        <dd>@item.XCosStorageClassShortName</dd>
+                        <dt>LastModified</dt>
+                        <dd><i>@item.GetLastModified().ToLocalTime()</i></dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,45 @@
+﻿@{
+    ViewData["Title"] = "Upload";
+}
+
+<div>
+    <h2>COS</h2>
+    <div id="container1" class="up-container">
+        <img src="~/images/files-lg.svg" width="204" height="52" />
+        <h1>Drag &amp; drop files here</h1>
+        <p class="up-clipboard">or paste them from clipboard</p>
+
+        <div class="up-form">
+            <form asp-action="CosUpload" asp-controller="Home" method="post">
+                <input type="file" multiple="multiple" style="display: none;" />
+                <button>Select Files</button>
+            </form>
+        </div>
+
+        <div class="up-status" data-urlformat='@Url.Action("GetCloudObject", "Home", new {fileName="filenameplaceholder" })' />
+    </div>
+</div>
+
+<div>
+    <h2>File</h2>
+    <div id="container2" class="up-container">
+        <img src="~/images/files-lg.svg" width="204" height="52" />
+        <h1>Drag &amp; drop files here</h1>
+        <p class="up-clipboard">or paste them from clipboard</p>
+        <div class="up-form">
+            <form asp-action="FileUpload" asp-controller="Home" method="post">
+                <input type="file" multiple="multiple" style="display: none;" />
+                <button>Select Files</button>
+            </form>
+        </div>
+
+        <div class="up-status" data-urlformat='@Url.Action("GetFile", "Home", new {fileName="filenameplaceholder" })' />
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        InitUploadZone("container1");
+        InitUploadZone("container2");
+    </script>
+}

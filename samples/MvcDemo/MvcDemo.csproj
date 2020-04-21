@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>TencentCos.Demo</UserSecretsId>
+    <AssemblyName>Demo</AssemblyName>
+    <RootNamespace>Demo</RootNamespace>
+    <Version>5.1.0.1421</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\TencentCos\TencentCos.csproj" />
+    <ProjectReference Include="..\Demo.Shared\Demo.Shared.csproj" />
+  </ItemGroup>
+
+</Project>
