@@ -4,7 +4,7 @@
 
 * 对象存储(COS, Cloud Object Storage)
 * 腾讯云(Qcloud/TencentYun)
-* IDE: Visual Studio 2017 15.8.7, dotnet-sdk-2.1.403
+* IDE: Visual Studio 2017 16.5.4+, dotnet-sdk-3.1.201+
 
 ## Demo Online
 http://demo.cos.myvas.com
@@ -27,6 +27,11 @@ https://cloud.tencent.com/document/product/436/10111
 * DELETE Object: Impl, Demo
 * GET Object: Impl, Demo
 
+## 注意
+除遵守Linux和Windows中的文件命名规则外，文件名中也不能含有下列字符：
+```
+~#[]@!$&'()+,;=^
+```
 
 #### 其他版本实现
 * 其他语言
@@ -36,11 +41,5 @@ https://cloud.tencent.com/document/product/436/10111
 * 已过期版本
 
 [cos-dotnet-sdk-v4](https://github.com/tencentyun/cos-donet-sdk-v4): Obsolete!
-
-## 注意
-除遵守Linux和Windows中的文件命名规则外，文件名中也不能含有下列字符：
-```
-~#[]@!$&'()+,;=^
-```
 
 
