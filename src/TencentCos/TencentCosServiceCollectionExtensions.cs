@@ -24,6 +24,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 services.Configure(setupAction); //IOptions<TencentCosOptions>
             }
 
+            services.AddHttpClient();
             services.TryAddScoped<ITencentCosHandler, TencentCosHandler>();
 
             return services;

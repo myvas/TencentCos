@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -25,13 +26,24 @@ namespace Myvas.AspNetCore.TencentCos
         /// 初始化新的<see cref="TencentCosHandler"/>实例。
         /// </summary>
         /// <param name="optionsAccessor">密钥配置</param>
-        /// <param name="backchannel">自定义<see cref="HttpClient"/>实例。</param>
         public TencentCosHandler(IOptions<TencentCosOptions> optionsAccessor,
+            IHttpClientFactory httpClientFactory,
             ILogger<TencentCosHandler> logger)
         {
             _options = optionsAccessor?.Value ?? throw new ArgumentNullException(nameof(optionsAccessor));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _backchannel = _options.Backchannel ?? new HttpClient();
+            if (_options.Backchannel != null)
+            {
+                _backchannel = _options.Backchannel;
+            }
+            else if (httpClientFactory != null)
+            {
+                _backchannel = _options.Backchannel = httpClientFactory.CreateClient("TencentCos");
+            }
+            else
+            {
+                throw new ArgumentNullException(nameof(httpClientFactory), "Please add code 'services.AddHttpClient();' in ConfigureServices(...)");
+            }
         }
 
         /// <summary>
@@ -43,20 +55,16 @@ namespace Myvas.AspNetCore.TencentCos
         {
             var endpoint = TencentCosDefaults.ServiceEndpoint;
             var req = new HttpRequestMessage(HttpMethod.Get, endpoint);
-            using (var resp = await SendAsync(req))
+            using var resp = await SendAsync(req);
+            if (!resp.IsSuccessStatusCode)
             {
-                if (!resp.IsSuccessStatusCode)
-                {
-                    RequestFailure(HttpMethod.Get, resp.StatusCode, await resp.Content.ReadAsStringAsync());
-                }
-
-                using (Stream sr = await resp.Content.ReadAsStreamAsync())
-                {
-                    var serializer = new XmlSerializer(typeof(ListAllMyBucketsResult));
-                    var result = (ListAllMyBucketsResult)serializer.Deserialize(sr);
-                    return result;
-                }
+                RequestFailure(HttpMethod.Get, resp.StatusCode, await resp.Content.ReadAsStringAsync());
             }
+
+            using Stream sr = await resp.Content.ReadAsStreamAsync();
+            var serializer = new XmlSerializer(typeof(ListAllMyBucketsResult));
+            var result = (ListAllMyBucketsResult)serializer.Deserialize(sr);
+            return result;
         }
 
         public async Task<ListBucketResult> AllObjectsAsync(string uri, string prefix, string maxKeys)
@@ -69,24 +77,20 @@ namespace Myvas.AspNetCore.TencentCos
                 //{ "marker",         "" },
                 { "max-keys",       maxKeys },
             };
-            uri = uri + query;
+            uri += query;
 
             var req = new HttpRequestMessage(HttpMethod.Get, uri);
 
-            using (var resp = await SendAsync(req))
+            using var resp = await SendAsync(req);
+            if (!resp.IsSuccessStatusCode)
             {
-                if (!resp.IsSuccessStatusCode)
-                {
-                    RequestFailure(HttpMethod.Get, resp.StatusCode, await resp.Content.ReadAsStringAsync());
-                }
-
-                using (Stream sr = await resp.Content.ReadAsStreamAsync())
-                {
-                    var serializer = new XmlSerializer(typeof(ListBucketResult));
-                    var result = (ListBucketResult)serializer.Deserialize(sr);
-                    return result;
-                }
+                RequestFailure(HttpMethod.Get, resp.StatusCode, await resp.Content.ReadAsStringAsync());
             }
+
+            using Stream sr = await resp.Content.ReadAsStreamAsync();
+            var serializer = new XmlSerializer(typeof(ListBucketResult));
+            var result = (ListBucketResult)serializer.Deserialize(sr);
+            return result;
         }
 
         /// <summary>
@@ -165,15 +169,13 @@ namespace Myvas.AspNetCore.TencentCos
 
             var endpoint = bucket.ToHttps("/");
             var req = new HttpRequestMessage(HttpMethod.Delete, endpoint);
-            using (var resp = await SendAsync(req))
+            using var resp = await SendAsync(req);
+            if (!resp.IsSuccessStatusCode)
             {
-                if (!resp.IsSuccessStatusCode)
-                {
-                    RequestFailure(HttpMethod.Delete, resp.StatusCode, await resp.Content.ReadAsStringAsync());
-                }
-
-                return true;
+                RequestFailure(HttpMethod.Delete, resp.StatusCode, await resp.Content.ReadAsStringAsync());
             }
+
+            return true;
         }
 
         /// <summary>
@@ -313,15 +315,13 @@ namespace Myvas.AspNetCore.TencentCos
         {
             var req = new HttpRequestMessage(HttpMethod.Delete, requestUri);
 
-            using (var resp = await SendAsync(req))
+            using var resp = await SendAsync(req);
+            if (!resp.IsSuccessStatusCode)
             {
-                if (!resp.IsSuccessStatusCode)
-                {
-                    RequestFailure(HttpMethod.Put, resp.StatusCode, await resp.Content.ReadAsStringAsync());
-                }
-
-                return true;
+                RequestFailure(HttpMethod.Put, resp.StatusCode, await resp.Content.ReadAsStringAsync());
             }
+
+            return true;
         }
 
         /// <summary>
@@ -345,17 +345,15 @@ namespace Myvas.AspNetCore.TencentCos
 
         private void RequestFailure(HttpMethod method, HttpStatusCode respStatusCode, string content)
         {
-            using (var sr = new StringReader(content))
-            {
-                var serializer = new XmlSerializer(typeof(ErrorResult));
-                var result = (ErrorResult)serializer.Deserialize(sr);
+            using var sr = new StringReader(content);
+            var serializer = new XmlSerializer(typeof(ErrorResult));
+            var result = (ErrorResult)serializer.Deserialize(sr);
 
-                var ex = new RequestFailureException(method, result)
-                {
-                    StatusCode = respStatusCode
-                };
-                throw ex;
-            }
+            var ex = new RequestFailureException(method, result)
+            {
+                StatusCode = respStatusCode
+            };
+            throw ex;
         }
 
         private async Task<HttpResponseMessage> SendAsync(HttpRequestMessage req)
@@ -368,7 +366,15 @@ namespace Myvas.AspNetCore.TencentCos
             req.Headers.Host = req.RequestUri.Host;
             req.Headers.TryAddWithoutValidation("Authorization", signature.BuildAuthorizationString());
 
-            return await _backchannel.SendAsync(req);
+            try
+            {
+                return await _backchannel.SendAsync(req);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                throw ex;
+            }
         }
     }
 }

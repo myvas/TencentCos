@@ -6,9 +6,16 @@ namespace Myvas.AspNetCore.TencentCos
 {
     public class ListAllMyBucketsResult
     {
+        public ListAllMyBucketsResult()
+        {
+            Buckets = new List<BucketResult>();
+        }
+
         public BucketOwnerResult Owner { get; set; }
 
         public List<BucketResult> Buckets { get; set; }
+
+
     }
 
     public class BucketOwnerResult

@@ -9,6 +9,12 @@ namespace Myvas.AspNetCore.TencentCos
     /// </summary>
     public class ListBucketResult
     {
+        public ListBucketResult()
+        {
+            Contents = new List<CloudObjectMetadata>();
+            CommonPrefixes = new List<string>();
+        }
+
         /// <summary>
         /// 存储桶名称，例如：zuhaotestnorth-1251668577
         /// </summary>

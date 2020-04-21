@@ -1,0 +1,58 @@
+﻿@page "/AllBuckets"
+
+@using Myvas.AspNetCore.TencentCos
+@inject ITencentCosHandler _cosHandler
+@inject NavigationManager _navManager
+
+<div class="jumbotron">
+    <h1>All Buckets</h1>
+</div>
+<div class="row">
+    <div class="col-12 text-center">
+        <div class="d-flex flex-column justify-content-center">
+            <h2>Owner</h2>
+            <dl>
+                <dt>Id</dt>
+                <dd>@Model?.Owner?.Id</dd>
+                <dt>DisplayName</dt>
+                <dd>@Model?.Owner?.DisplayName</dd>
+            </dl>
+        </div>
+    </div>
+</div>
+<div class="row">
+    @foreach (var item in Model.Buckets)
+    {
+        var bucketUrl = item.GetBucket().ToHttps("");
+        var openBucketUrl = "/buckets/" + Uri.EscapeDataString(bucketUrl.AbsoluteUri);
+
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    @item.Name
+                </div>
+                <div class="card-body">
+                    <div class="text-break"><NavLink class="nav-link" href="@openBucketUrl">@bucketUrl</NavLink></div>
+                    <hr />
+                    <dl>
+                        <dt>Name</dt>
+                        <dd>@item.Name</dd>
+                        <dt>Location</dt>
+                        <dd>@item.Location</dd>
+                        <dt>CreationDate</dt>
+                        <dd><i>@item.GetCreationDate().ToLocalTime()</i></dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    ListAllMyBucketsResult Model = new ListAllMyBucketsResult();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Model = await _cosHandler.AllBucketsAsync();
+    }
+}
