@@ -2,7 +2,7 @@
 This repo was abandonded! We recommand to use [Minio](https://min.io).
 
 - [How to install minio storage server on debian 11](https://www.howtoforge.com/how-to-install-minio-storage-server-on-debian-11/)
-- [Minio (.NET SDK](https://github.com/minio/minio-dotnet)
+- [Minio (.NET SDK)](https://github.com/minio/minio-dotnet)
 
 
 # Myvas.AspNetCore.TencentCos 
