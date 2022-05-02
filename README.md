@@ -1,8 +1,9 @@
 # NOTES
 This repo was abandonded! We recommand to use [Minio](https://min.io).
 
+- [MinIO Client SDK for .NET](https://github.com/minio/minio-dotnet)
+- [Systemd service for MinIO](https://github.com/minio/minio-service/tree/master/linux-systemd)
 - [How to install minio storage server on debian 11](https://www.howtoforge.com/how-to-install-minio-storage-server-on-debian-11/)
-- [Minio (.NET SDK)](https://github.com/minio/minio-dotnet)
 
 
 # Myvas.AspNetCore.TencentCos 
