@@ -1,5 +1,5 @@
 # NOTES
-This repo was abandonded! We recommand to use [Minio](https://min.io).
+This repo was abandoned! We recommand to use [Minio](https://min.io).
 
 - [MinIO Client SDK for .NET](https://github.com/minio/minio-dotnet)
 - [Systemd service for MinIO](https://github.com/minio/minio-service/tree/master/linux-systemd)
